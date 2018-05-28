@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net"
 	"runtime"
@@ -11,7 +12,9 @@ import (
 	"github.com/containernetworking/cni/pkg/types/current"
 	"github.com/containernetworking/cni/pkg/version"
 	"github.com/containernetworking/plugins/pkg/ip"
+	"github.com/containernetworking/plugins/pkg/ipam"
 	"github.com/containernetworking/plugins/pkg/ns"
+	"github.com/j-keck/arping"
 )
 
 const defaultBrName = "ovsbr0"
@@ -101,12 +104,20 @@ func cmdAdd(args *skel.CmdArgs) error {
 	}
 	defer netns.Close()
 
-	// TODO run the IPAM plugin and get back the config to apply
-
-	// Convert whatever the IPAM result was into the current Result type
-	result, err := current.NewResultFromResult(nil)
+	// run the IPAM plugin and get back the config to apply
+	r, err := ipam.ExecAdd(n.IPAM.Type, args.StdinData)
 	if err != nil {
 		return err
+	}
+
+	// Convert whatever the IPAM result was into the current Result type
+	result, err := current.NewResultFromResult(r)
+	if err != nil {
+		return err
+	}
+
+	if len(result.IPs) == 0 {
+		return errors.New("IPAM plugin returned missing IP config")
 	}
 
 	hostInterface, containerInterface, err := setupVeth(netns, br, args.IfName, n.MTU)
@@ -124,16 +135,16 @@ func cmdAdd(args *skel.CmdArgs) error {
 		}
 
 		// TODO Add the IP to the interface
-		// if err := ipam.ConfigureIface(args.IfName, result); err != nil {
-		// 	return err
-		// }
+		if err := ipam.ConfigureIface(args.IfName, result); err != nil {
+			return err
+		}
 
 		// TODO Send a gratuitous arp
-		// for _, ipc := range result.IPs {
-		// 	if ipc.Version == "4" {
-		// 		_ = arping.GratuitousArpOverIface(ipc.Address.IP, *contVeth)
-		// 	}
-		// }
+		for _, ipc := range result.IPs {
+			if ipc.Version == "4" {
+				_ = arping.GratuitousArpOverIface(ipc.Address.IP, *contVeth)
+			}
+		}
 		return nil
 	}); err != nil {
 		return err
@@ -156,8 +167,29 @@ func cmdDel(args *skel.CmdArgs) error {
 		return err
 	}
 
+	if err := ipam.ExecDel(n.IPAM.Type, args.StdinData); err != nil {
+		return err
+	}
+
 	if args.Netns == "" {
 		return nil
+	}
+
+	// There is a netns so try to clean up. Delete can be called multiple times
+	// so don't return an error if the device is already removed.
+	// If the device isn't there then don't try to clean up IP masq either.
+	var ipnets []*net.IPNet
+	err = ns.WithNetNSPath(args.Netns, func(_ ns.NetNS) error {
+		var err error
+		ipnets, err = ip.DelLinkByNameAddr(args.IfName)
+		if err != nil && err == ip.ErrLinkNotFound {
+			return nil
+		}
+		return err
+	})
+
+	if err != nil {
+		return err
 	}
 
 	return err
