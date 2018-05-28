@@ -104,6 +104,11 @@ func cmdAdd(args *skel.CmdArgs) error {
 	}
 	defer netns.Close()
 
+	hostInterface, containerInterface, err := setupVeth(netns, br, args.IfName, n.MTU)
+	if err != nil {
+		return err
+	}
+
 	// run the IPAM plugin and get back the config to apply
 	r, err := ipam.ExecAdd(n.IPAM.Type, args.StdinData)
 	if err != nil {
@@ -120,11 +125,6 @@ func cmdAdd(args *skel.CmdArgs) error {
 		return errors.New("IPAM plugin returned missing IP config")
 	}
 
-	hostInterface, containerInterface, err := setupVeth(netns, br, args.IfName, n.MTU)
-	if err != nil {
-		return err
-	}
-
 	result.Interfaces = []*current.Interface{brInterface, hostInterface, containerInterface}
 
 	if err := netns.Do(func(_ ns.NetNS) error {
@@ -133,12 +133,12 @@ func cmdAdd(args *skel.CmdArgs) error {
 			return err
 		}
 
-		// TODO Add the IP to the interface
+		// Add the IP to the interface
 		if err := ipam.ConfigureIface(args.IfName, result); err != nil {
 			return err
 		}
 
-		// TODO Send a gratuitous arp
+		// Send a gratuitous arp
 		for _, ipc := range result.IPs {
 			if ipc.Version == "4" {
 				_ = arping.GratuitousArpOverIface(ipc.Address.IP, *contVeth)
@@ -148,13 +148,6 @@ func cmdAdd(args *skel.CmdArgs) error {
 	}); err != nil {
 		return err
 	}
-
-	// TODO Refetch the bridge since its MAC address may change when the first
-	// veth is added or after its IP address is set
-	// br, err = bridgeByName(n.BrName)
-	// if err != nil {
-	// 	return err
-	// }
 
 	return types.PrintResult(result, cniVersion)
 }
