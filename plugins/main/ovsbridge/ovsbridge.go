@@ -64,7 +64,7 @@ func setupVeth(netns ns.NetNS, br *OVSSwitch, ifName string, mtu int) (*current.
 	}
 
 	// connect host veth end to the bridge
-	if err := br.addPort(contIface.Name); err != nil {
+	if err := br.addPort(hostIface.Name); err != nil {
 		return nil, nil, fmt.Errorf("failed to connect %q to bridge %v: %v", hostIface.Name, br.bridgeName, err)
 	}
 
