@@ -89,6 +89,12 @@
 			"revisionTime": "2018-05-24T14:42:07Z"
 		},
 		{
+			"checksumSHA1": "HmbftipkadrLlCfzzVQ+iFHbl6g=",
+			"path": "github.com/golang/glog",
+			"revision": "23def4e6c14b4da8ac2ed8007337bc5eb5007998",
+			"revisionTime": "2016-01-25T20:49:56Z"
+		},
+		{
 			"checksumSHA1": "p6Lp0JStM2aO1Jns3ZHixwpVXLY=",
 			"path": "github.com/j-keck/arping",
 			"revision": "2cf9dc699c5640a7e2c81403a44127bf28033600",
