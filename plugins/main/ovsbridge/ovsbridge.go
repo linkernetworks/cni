@@ -24,7 +24,7 @@ type NetConf struct {
 	types.NetConf
 	BrName string `json:"bridge"`
 	MTU    int    `json:"mtu"`
-	PNIC   string `json:"pNIC"`
+	Device string `json:"device"`
 }
 
 func init() {
@@ -95,7 +95,7 @@ func cmdAdd(args *skel.CmdArgs) error {
 		return err
 	}
 
-	if err := br.addPort(n.PNIC); err != nil {
+	if err := br.addPort(n.Device); err != nil {
 		return err
 	}
 
