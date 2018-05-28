@@ -129,7 +129,6 @@ func cmdAdd(args *skel.CmdArgs) error {
 
 	if err := netns.Do(func(_ ns.NetNS) error {
 		contVeth, err := net.InterfaceByName(args.IfName)
-		_ = contVeth
 		if err != nil {
 			return err
 		}
@@ -162,7 +161,6 @@ func cmdAdd(args *skel.CmdArgs) error {
 
 func cmdDel(args *skel.CmdArgs) error {
 	n, _, err := loadNetConf(args.StdinData)
-	_ = n
 	if err != nil {
 		return err
 	}
