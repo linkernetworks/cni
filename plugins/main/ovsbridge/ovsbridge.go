@@ -14,7 +14,6 @@ import (
 	"github.com/containernetworking/plugins/pkg/ip"
 	"github.com/containernetworking/plugins/pkg/ipam"
 	"github.com/containernetworking/plugins/pkg/ns"
-	"github.com/golang/glog"
 	"github.com/j-keck/arping"
 )
 
@@ -134,8 +133,14 @@ func cmdAdd(args *skel.CmdArgs) error {
 			return err
 		}
 
-		glog.Info("Results %+v", result)
 		// Add the IP to the interface
+		// 0 -> bridge itself
+		// 1 -> veth endpoint
+		// 2 -> interface in container
+		// All IPs currently refer to the container interface
+		for _, ipc := range result.IPs {
+			ipc.Interface = current.Int(2)
+		}
 		if err := ipam.ConfigureIface(args.IfName, result); err != nil {
 			return err
 		}
