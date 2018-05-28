@@ -3,6 +3,12 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "xfbSHE1o4bpf2Ei6bLf60N7iR9Q=",
+			"path": "github.com/containernetworking/cni/pkg/invoke",
+			"revision": "85488fbd8d4e77e51a0e063cf71f5b4ec9349475",
+			"revisionTime": "2018-05-23T15:22:32Z"
+		},
+		{
 			"checksumSHA1": "LvjTFR2Am01kquJNDnfISncPfRw=",
 			"path": "github.com/containernetworking/cni/pkg/skel",
 			"revision": "a7885cb6f8ab03fba07852ded351e4f5e7a112bf",
@@ -41,24 +47,32 @@
 			"versionExact": "v0.6.0"
 		},
 		{
-			"checksumSHA1": "BUj+UEIzHmUAfGD4c/srsQJ4TY8=",
+			"checksumSHA1": "sHP4Pnt1kftYMGDZttlz3bvFK2k=",
 			"path": "github.com/containernetworking/plugins/pkg/ip",
-			"revision": "7480240de9749f9a0a5c8614b17f1f03e0c06ab9",
-			"revisionTime": "2017-08-11T16:59:55Z",
-			"version": "=v0.6.0",
-			"versionExact": "v0.6.0"
+			"revision": "1d973f59d2a546a77994b1a17e537757dc0acb85",
+			"revisionTime": "2018-05-16T15:54:47Z"
 		},
 		{
-			"checksumSHA1": "wmZ5nRpAN/myLfAzVpPR1RxnoFQ=",
+			"checksumSHA1": "s/z1JO9VhL/ftdsZfkg24vxZJvM=",
+			"path": "github.com/containernetworking/plugins/pkg/ipam",
+			"revision": "1d973f59d2a546a77994b1a17e537757dc0acb85",
+			"revisionTime": "2018-05-16T15:54:47Z"
+		},
+		{
+			"checksumSHA1": "ZM0SnLIE5+Clczod2Md8mVGMz/M=",
 			"path": "github.com/containernetworking/plugins/pkg/ns",
-			"revision": "7480240de9749f9a0a5c8614b17f1f03e0c06ab9",
-			"revisionTime": "2017-08-11T16:59:55Z",
-			"version": "=v0.6.0",
-			"versionExact": "v0.6.0"
+			"revision": "1d973f59d2a546a77994b1a17e537757dc0acb85",
+			"revisionTime": "2018-05-16T15:54:47Z"
 		},
 		{
 			"checksumSHA1": "rUAk+nce6eDIWtYo/QYIoqlTfrY=",
 			"path": "github.com/containernetworking/plugins/pkg/utils/hwaddr",
+			"revision": "1d973f59d2a546a77994b1a17e537757dc0acb85",
+			"revisionTime": "2018-05-16T15:54:47Z"
+		},
+		{
+			"checksumSHA1": "eVojiWsh48y175NN7Newtb9lmxQ=",
+			"path": "github.com/containernetworking/plugins/pkg/utils/sysctl",
 			"revision": "1d973f59d2a546a77994b1a17e537757dc0acb85",
 			"revisionTime": "2018-05-16T15:54:47Z"
 		},
@@ -81,6 +95,12 @@
 			"revisionTime": "2016-06-18T11:04:41Z"
 		},
 		{
+			"checksumSHA1": "7Fqh2nZs8wQCD0AYGsqfLodWHAk=",
+			"path": "github.com/safchain/ethtool",
+			"revision": "6e3f4faa84e1d8d48afec75ed064cf3611d3f8bf",
+			"revisionTime": "2018-05-04T15:00:54Z"
+		},
+		{
 			"checksumSHA1": "sZaLgMMf+AKwGE8mMvwdDCpHsQA=",
 			"path": "github.com/vishvananda/netlink",
 			"revision": "7c0b5944a3036fc8dc9f4cbf2f5c76dedd29af8b",
@@ -99,11 +119,11 @@
 			"revisionTime": "2017-11-10T22:28:10Z"
 		},
 		{
-			"checksumSHA1": "HmaHzaTDXH/mmTvXes0LLl/adaE=",
+			"checksumSHA1": "VUb+SqeoloAw1A2Jz9IzkDNs06c=",
 			"path": "golang.org/x/sys/unix",
-			"revision": "31355384c89b50e6faeffdb36f64a77a8210188e",
-			"revisionTime": "2018-05-25T04:52:15Z"
+			"revision": "c11f84a56e43e20a78cee75a7c034031ecf57d1f",
+			"revisionTime": "2018-05-25T13:55:20Z"
 		}
 	],
-	"rootPath": "github.com/linkernetworks/ovs-underlay"
+	"rootPath": "github.com/linkernetworks/cni"
 }
