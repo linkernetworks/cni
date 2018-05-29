@@ -94,8 +94,10 @@ func cmdAdd(args *skel.CmdArgs) error {
 		return err
 	}
 
-	if err := br.addPort(n.Device); err != nil {
-		return err
+	if n.Device != "" {
+		if err := br.addPort(n.Device); err != nil {
+			return err
+		}
 	}
 
 	netns, err := ns.GetNS(args.Netns)

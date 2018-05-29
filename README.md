@@ -26,6 +26,7 @@ Prepare a json file named `static.conf`
         "device": "enp0s8"
 }
 ```
+device field is optional.
 
 ## Usage
 
